@@ -5,7 +5,7 @@ FROM gcr.io/tensorflow-testing/nosla-cuda11.2-cudnn8.1-ubuntu20.04-manylinux2014
 ARG PYBIN=/usr/local/bin/python
 ARG PYLIB=/usr/local/lib/python
 ARG TF_VERSION=2.2
-ARG PY_VERSIONS="3.7 3.8 3.9 3.10"
+ARG PY_VERSIONS="3.7"
 
 # Uninstall some nightly packages.
 ARG PACKAGES_TO_UNINSTALL="keras-nightly tf-estimator-nightly tb-nightly"
@@ -31,13 +31,7 @@ ARG TF_CUDA_INCLUDE=site-packages/tensorflow/include/third_party/gpus/cuda/inclu
 
 RUN mkdir -p ${PYLIB}3.7/${TF_CUDA_INCLUDE} && \
     cp -r ${CUDA_INCLUDE}/* ${PYLIB}3.7/${TF_CUDA_INCLUDE} && \
-    mkdir -p ${PYLIB}3.8/${TF_CUDA_INCLUDE} && \
-    cp -r ${CUDA_INCLUDE}/* ${PYLIB}3.8/${TF_CUDA_INCLUDE} && \
-    mkdir -p ${PYLIB}3.9/${TF_CUDA_INCLUDE} && \
-    cp -r ${CUDA_INCLUDE}/* ${PYLIB}3.9/${TF_CUDA_INCLUDE} && \
-    mkdir -p ${PYLIB}3.10/${TF_CUDA_INCLUDE} && \
-    cp -r ${CUDA_INCLUDE}/* ${PYLIB}3.10/${TF_CUDA_INCLUDE}
-
+    
 # Ubuntu 18.04 has patchelf 0.9, which has a number of bugs. Install version
 # 0.12 from source.
 RUN cd /opt && \
@@ -86,17 +80,10 @@ ARG SPHINX_VERSION="4.5.0"
 ARG PYDATA_SPHINX_THEME_VERSION="0.8.0"
 ARG SPHINX_BOOK_THEME_VERSION="0.3.3"
 ARG PYTHON_DEPS="sphinx==${SPHINX_VERSION} pydata-sphinx-theme==${PYDATA_SPHINX_THEME_VERSION} ipython sphinx-sitemap myst-nb sphinx-book-theme==${SPHINX_BOOK_THEME_VERSION} pydot"
-RUN ${PYBIN}3.7 -m pip install ${PYTHON_DEPS} && \
-    ${PYBIN}3.8 -m pip install ${PYTHON_DEPS} && \
-    ${PYBIN}3.9 -m pip install ${PYTHON_DEPS} && \
-    ${PYBIN}3.10 -m pip install ${PYTHON_DEPS}
-
+RUN ${PYBIN}3.7 -m pip install ${PYTHON_DEPS} 
 # Patch auditwheel.
 COPY patch_auditwheel.sh .
-RUN ./patch_auditwheel.sh ${PYLIB}3.7 && \
-    ./patch_auditwheel.sh ${PYLIB}3.8 && \
-    ./patch_auditwheel.sh ${PYLIB}3.9 && \
-    ./patch_auditwheel.sh ${PYLIB}3.10
+RUN ./patch_auditwheel.sh ${PYLIB}3.7 
 
 # Install custom sphinx extensions.
 COPY extensions /opt/sphinx/extensions
