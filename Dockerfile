@@ -30,7 +30,7 @@ ARG CUDA_INCLUDE=/usr/local/cuda/targets/x86_64-linux/include
 ARG TF_CUDA_INCLUDE=site-packages/tensorflow/include/third_party/gpus/cuda/include
 
 RUN mkdir -p ${PYLIB}3.7/${TF_CUDA_INCLUDE} && \
-    cp -r ${CUDA_INCLUDE}/* ${PYLIB}3.7/${TF_CUDA_INCLUDE} && \
+    cp -r ${CUDA_INCLUDE}/* ${PYLIB}3.7/${TF_CUDA_INCLUDE} 
     
 # Ubuntu 18.04 has patchelf 0.9, which has a number of bugs. Install version
 # 0.12 from source.
