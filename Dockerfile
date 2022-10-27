@@ -4,7 +4,7 @@ FROM gcr.io/tensorflow-testing/nosla-cuda11.2-cudnn8.1-ubuntu20.04-manylinux2014
 
 ARG PYBIN=/usr/local/bin/python
 ARG PYLIB=/usr/local/lib/python
-ARG TF_VERSION=2.10.0
+ARG TF_VERSION=2.2
 ARG PY_VERSIONS="3.7 3.8 3.9 3.10"
 
 # Uninstall some nightly packages.
